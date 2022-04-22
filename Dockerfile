@@ -1,5 +1,4 @@
-FROM alpine:3.14
-MAINTAINER Shyam Sunder <sgsunder1@gmail.com>
+FROM alpine:3.15
 
 # Install samba
 RUN apk --no-cache --no-progress add bash samba shadow tini tzdata && \
