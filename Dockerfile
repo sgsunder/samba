@@ -1,12 +1,13 @@
+FROM golang as dfree_builder
+
+WORKDIR /go/src/app
+ADD https://raw.githubusercontent.com/int128/samba-dfree/master/main.go main.go
+RUN go mod init && go build -o /samba-dfree
+
 FROM alpine:3.15
 
 # Install samba
 RUN apk --no-cache --no-progress add bash samba shadow tini tzdata && \
-    wget \
-        -O "/etc/samba/samba-dfree" \
-        "https://github.com/int128/samba-dfree/releases/download/0.2.0/samba-dfree" \
-        && \
-    chmod +x "/etc/samba/samba-dfree" && \
     addgroup -S smb && \
     adduser -S -D -H -h /tmp -s /sbin/nologin -G smb -g 'Samba User' smbuser &&\
     file="/etc/samba/smb.conf" && \
@@ -63,6 +64,7 @@ RUN apk --no-cache --no-progress add bash samba shadow tini tzdata && \
     rm -rf /tmp/*
 
 COPY samba.sh /usr/bin/
+COPY --from=dfree_builder /samba-dfree /etc/samba/samba-dfree
 
 EXPOSE 137/udp 138/udp 139 445
 
