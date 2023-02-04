@@ -2,6 +2,11 @@ FROM alpine:3.15
 
 # Install samba
 RUN apk --no-cache --no-progress add bash samba shadow tini tzdata && \
+    wget \
+        -O "/etc/samba/samba-dfree" \
+        "https://github.com/int128/samba-dfree/releases/download/0.2.0/samba-dfree" \
+        && \
+    chmod +x "/etc/samba/samba-dfree" && \
     addgroup -S smb && \
     adduser -S -D -H -h /tmp -s /sbin/nologin -G smb -g 'Samba User' smbuser &&\
     file="/etc/samba/smb.conf" && \
@@ -36,6 +41,10 @@ RUN apk --no-cache --no-progress add bash samba shadow tini tzdata && \
     echo '   recycle:maxsize = 0' >>$file && \
     echo '   recycle:repository = .deleted' >>$file && \
     echo '   recycle:versions = yes' >>$file && \
+    echo '' >>$file && \
+    echo '   # Free Disk Usage Fix' >>$file && \
+    echo '   dfree command = /etc/samba/samba-dfree' >>$file && \
+    echo '   dfree cache time = 60' >>$file && \
     echo '' >>$file && \
     echo '   # Security' >>$file && \
     echo '   client ipc max protocol = SMB3' >>$file && \

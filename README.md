@@ -8,6 +8,7 @@ with the following changes:
  * Removed default volume mounts, containers are now fully ephemeral
  * Pinned Alpine version
  * Build and host on GitHub container repository
+ * Disk Usage Reporting based on [int128/samba-dfree](https://github.com/int128/samba-dfree)
 
 ### What is Samba?
 
