@@ -73,6 +73,7 @@ OR set local storage:
         -w "<workgroup>"       Configure the workgroup (domain) samba should use
                     required arg: "<workgroup>"
                     <workgroup> for samba
+        -D          Enable the custom dfree command
         -W          Allow access wide symbolic links
         -I          Add an include option at the end of the smb.conf
                     required arg: "<include file path>"

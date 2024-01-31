@@ -43,10 +43,6 @@ RUN apk --no-cache --no-progress add bash samba shadow tini tzdata && \
     echo '   recycle:repository = .deleted' >>$file && \
     echo '   recycle:versions = yes' >>$file && \
     echo '' >>$file && \
-    echo '   # Free Disk Usage Fix' >>$file && \
-    echo '   dfree command = /etc/samba/samba-dfree' >>$file && \
-    echo '   dfree cache time = 60' >>$file && \
-    echo '' >>$file && \
     echo '   # Security' >>$file && \
     echo '   client ipc max protocol = SMB3' >>$file && \
     echo '   client ipc min protocol = SMB2_10' >>$file && \

@@ -62,6 +62,12 @@ global() { local key="$(sed 's| *=.*||' <<< $1)" \
     fi
 }
 
+### dfree: enable the dfree command
+dfree() {
+    global "dfree command = /etc/samba/samba-dfree"
+    global "dfree cache time = 60"
+}
+
 ### include: add a samba config file include
 # Arguments:
 #   file) file to import
@@ -228,6 +234,7 @@ Options (fields in '[]' are optional, '<>' are required):
     -w \"<workgroup>\"       Configure the workgroup (domain) samba should use
                 required arg: \"<workgroup>\"
                 <workgroup> for samba
+    -D          Enable the custom dfree command
     -W          Allow access wide symbolic links
     -I          Add an include option at the end of the smb.conf
                 required arg: \"<include file path>\"
@@ -241,7 +248,7 @@ The 'command' (if provided and valid) will be run instead of samba
 [[ "${USERID:-""}" =~ ^[0-9]+$ ]] && usermod -u $USERID -o smbuser
 [[ "${GROUPID:-""}" =~ ^[0-9]+$ ]] && groupmod -g $GROUPID -o smb
 
-while getopts ":hc:G:g:i:nprs:Su:Ww:I:" opt; do
+while getopts ":hc:G:g:i:nprs:Su:DWw:I:" opt; do
     case "$opt" in
         h) usage ;;
         c) charmap "$OPTARG" ;;
@@ -254,6 +261,7 @@ while getopts ":hc:G:g:i:nprs:Su:Ww:I:" opt; do
         s) eval share $(sed 's/^/"/; s/$/"/; s/;/" "/g' <<< $OPTARG) ;;
         S) smb ;;
         u) eval user $(sed 's/^/"/; s/$/"/; s/;/" "/g' <<< $OPTARG) ;;
+        D) dfree ;;
         w) workgroup "$OPTARG" ;;
         W) widelinks ;;
         I) include "$OPTARG" ;;
